@@ -15,7 +15,7 @@ function Footer(props) {
                         <li><Link to='/contactus'>Contact Us</Link></li>
                     </ul>
                 </div>
-                <Outlet />
+                {/* <Outlet /> */}
                 <div className="col-7 col-sm-5">
                     <h5>Our Address</h5>
                     <address>
