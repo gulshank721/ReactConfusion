@@ -11,7 +11,7 @@ import Header from './HeaderComponent';
 import {Route , useParams} from 'react-router-dom';
 import { Routes} from "react-router-dom";
 import ContactUs from './ContactUsComponent';
-import AboutUs from './AboutUsComponent';
+import AboutUs from './AboutComponent';
 
 class Main extends Component {
 
@@ -63,7 +63,7 @@ class Main extends Component {
              <Route index path='home' element={<HomePage/>}/>
              <Route exact path='menu' element={<Menu dishes={this.state.dishes} />} />
              <Route path='/menu/:dishId' element={<DishWithId/>} />
-             <Route  path='aboutus'  element={<AboutUs/>}/>
+             <Route  path='aboutus'  element={<AboutUs leaders={this.state.leaders}/>}/>
              <Route  path='contactus'  element={<ContactUs/>}/>
              {/* <Redirect to="/home" /> */}
              <Route path="*" to='home'/>
