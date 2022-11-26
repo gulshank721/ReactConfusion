@@ -1,3 +1,10 @@
+# Restaurant Reservation System(Ongoing)
+
+React has been used as frontend for Component based User Interface.\
+NodeJs,ExpressJs and MongoDB has been used for server side development and for database storage.\
+This Website will facilitates User login facilities, Booking table in restaurant, viewing food item list,
+about resturant and working chefs.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
