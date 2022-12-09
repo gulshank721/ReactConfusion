@@ -1,20 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
+// import { createSlice } from '@reduxjs/toolkit'
+// import { COMMENTS } from '../shared/comments';
+// import { PROMOTIONS } from '../shared/promotions';
+// import { LEADERS } from '../shared/leaders';
 
-const initialState = {
-    dishes: DISHES,
-    comments: COMMENTS,
-    promotions: PROMOTIONS,
-    leaders: LEADERS
-}
-export const slice= createSlice({
-    name: 'dcpl',
-    initialState,
-    reducers:{
+// const initialState = {
+//     dishes: DISHES,
+//     comments: COMMENTS,
+//     promotions: PROMOTIONS,
+//     leaders: LEADERS
+// }
+// export const slice= createSlice({
+//     name: 'dcpl',
+//     initialState,
+//     reducers:{
 
-    },
-})
-export default slice.reducer
+//     },
+// })
+// export default slice.reducer

@@ -1,8 +1,8 @@
 export const LEADERS = [
     {
       id: 0,
-      name: 'Peter Pan',
-      image: '/assets/images/alberto.png',
+      name: 'Gulshan Kumar',
+      image: '/assets/images/gulshan.jpg',
       designation: 'Chief Epicurious Officer',
       abbr: 'CEO',
       featured: false,
@@ -28,8 +28,8 @@ export const LEADERS = [
     },
     {
       id: 3,
-      name: 'Alberto Somayya',
-      image: '/assets/images/alberto.png',
+      name: 'Gulshan Kumar',
+      image: '/assets/images/gulshan.jpg',
       designation: 'Executive Chef',
       abbr: 'EC',
       featured: true,

@@ -24,10 +24,10 @@ function Main() {
   // getting store values
    
   
-    const dishes = useSelector((state) => state.dcpl.dishes)
-    const comments = useSelector((state) => state.dcpl.comments)
-    const promotions = useSelector((state) => state.dcpl.promotions)
-    const leaders = useSelector((state) => state.dcpl.leaders)
+    const dishes = useSelector((state) => state.dishes.dishes)
+    const comments = useSelector((state) => state.comments.comments)
+    const promotions = useSelector((state) => state.promotions.promotions)
+    const leaders = useSelector((state) => state.leaders.leaders)
 
 
     const HomePage = () => {
