@@ -31,3 +31,10 @@ address{
 .navbar-dark {
     background-color: #512DA8;
 }
+.cmtauthor{
+margin-bottom: 0rem;
+/* text-decoration-color: rgb(13, 221, 228); */
+color: rgb(172, 39, 39);
+font-family: 'Times New Roman', Times, serif;
+font-size: large;
+}

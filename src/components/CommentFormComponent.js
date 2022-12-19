@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Button,Modal,ModalBody,ModalHeader, Label, Row, Col} from 'reactstrap'
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, LocalForm, Errors , actions} from 'react-redux-form';
+import { addComments } from '../redux/comments';
+import { useSelector, useDispatch } from 'react-redux'
+
 
 //// validators
 const required = (val) => val && val.length; //value > 0
@@ -8,6 +11,7 @@ const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
 
 class CommentForm extends Component{
+
     constructor(props){
         super(props);
         this.state = {
@@ -20,7 +24,9 @@ class CommentForm extends Component{
     }
     handleCommentFormSubmit(values) {
         console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        // alert("Current State is: " + JSON.stringify(values));
+        // this.props.resetFeedbackForm();
+        addComments()
 
 
     }
@@ -38,7 +44,7 @@ class CommentForm extends Component{
                 <Modal isOpen={this.state.isCommentFormModalOpen} toggle={this.toggleCommentFormModal}>
                     <ModalHeader toggle={this.toggleCommentFormModal}>Submit Comment</ModalHeader>
                     <ModalBody>
-                    <LocalForm onSubmit={(values) => this.handleCommentFormSubmit(values)}>
+                    <LocalForm  onSubmit={(values) => this.handleCommentFormSubmit(values)}>
                           
                           {/* rating */}
                           <Row className="form-group">

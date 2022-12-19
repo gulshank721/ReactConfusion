@@ -4,6 +4,15 @@ import { Card, CardImg, CardText, CardBody,
 import { Link } from 'react-router-dom';
 import { Button,Modal,ModalBody,ModalHeader, Label, Row, Col} from 'reactstrap'
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import  {addComments}  from '../redux/comments';
+import {fetchDishes} from '../redux/dishes';
+import { Loading } from './LoadingComponent';
+import { useEffect } from "react";
+import { useSelector, useDispatch, connect } from 'react-redux'
+// import { connect } from 'react-redux';
+
+
+
 
 // import CommentForm from "./CommentFormComponent";
 //// validators
@@ -11,7 +20,19 @@ const required = (val) => val && val.length; //value > 0
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
 //  commentForm Component start here
+
+// const mapDispatchToProps = dispatch => ({
+  
+//     addComment: (dishId, rating, author, comment) => dispatch(addComments(dishId, rating, author, comment))
+  
+//   });
+//   const mapDispatchToProps = { addComments };
+//   const mapStateToProps = (state) => ({
+//     // comment: state.counter.value
+//     comment:state.comments.comments
+//   });
 class CommentForm extends Component {
+    
 
     constructor(props) {
         super(props);
@@ -24,12 +45,14 @@ class CommentForm extends Component {
         this.toggleCommentFormModal = this.toggleCommentFormModal.bind(this);
         this.handleCommentFormSubmit = this.handleCommentFormSubmit.bind(this);
 
+
     }
 
     handleCommentFormSubmit(values) {
         console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
-
+        // alert("Current State is: " + JSON.stringify(values));
+        // const {addComment} = this.props.addComments;
+        this.props.addComment(this.props.dishId,values.rating, values.author, values.comment);
 
     }
 
@@ -155,10 +178,13 @@ class CommentForm extends Component {
         );
     }
 }
+// export default connect(mapStateToProps,mapDispatchToProps)(CommentForm);
+
 // commmentFormComponents Ends here
 
     function RenderDish({dish}) {
-
+       
+        
         if (dish != null) {
             return (
                 <div className='col-12 col-md-5 m-1'>
@@ -179,15 +205,26 @@ class CommentForm extends Component {
         }
     }
 
-    function RenderComments({comments}){
+    function RenderComments({comments ,dishId}){
+        const comment = useSelector((state) => state.comments.comments)
+        const dispatch = useDispatch()
+        const addComment=(dishId,rating,author,comment)=>{
+           const toComment={
+                dishId:dishId,
+                rating:rating,
+                author:author,
+                comment:comment
+            }
+            dispatch(addComments(toComment))
+            };
         if (comments == null) {
             return (<div></div>)
         }
         const cmnts = comments.map(comment => {
             return (
                 <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p>-- {comment.author},
+                    <p className="cmtauthor">{comment.comment}</p>
+                    <p >-- {comment.author},
                     &nbsp;
                     {new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
@@ -205,15 +242,35 @@ class CommentForm extends Component {
                 <ul className='list-unstyled'>
                     {cmnts}
                 </ul>
-                 <CommentForm></CommentForm>
+                 
+                 <CommentForm dishId={dishId} addComment={addComment}> </CommentForm>
             </div>
         )
     }
 
 
     function DishDetail(props){
-        
-        if (props.dish == null) {
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+
+       
+       else if (props.dish == null) {
             return (<div></div>);
         }
            
@@ -236,7 +293,7 @@ class CommentForm extends Component {
             </div>
                 <div className='row'>
                 <RenderDish dish ={props.dish}/>
-                <RenderComments comments={props.comments}/>
+                <RenderComments comments={props.comments} dishId={props.dish.id}/>
                 
                  </div>
             </div>
@@ -246,4 +303,7 @@ class CommentForm extends Component {
     }
 
 
-export default DishDetail;
+export {DishDetail};
+// export default {DishDetail,Connected};
+// export default DishDetail
+// export default connect(null ,{ addComments })(CommentForm);

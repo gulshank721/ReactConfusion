@@ -4,21 +4,48 @@ import { DISHES } from '../shared/dishes';
 
 const initialState={
  dishes:DISHES,
+ isLoading:true,
+ errMess:null
 }
 export const dishesSlice= createSlice({
     name: 'dishes',
     initialState,
     reducers:{
-        increment: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
+        addDishes: (state,action) => {
+            // console.log(action.payload[0]);
+            // console.log(action.payload.length);
+
+            state.isLoading= false; 
+            state.errMess=null;
+            state.dishes.push(action.payload);
+            // action.payload.forEach(element => {
+            //     console.log(element);
+            //     state.dishes.push(element);
+            // });
+            console.log(state.dishes)
           },
+        dishLoading:(state,action)=>{
+            state.isLoading= true;
+             state.errMess= null;
+            state.dishes= [];
+        },
+        dishFailed:(state,action)=>{
+            state.isLoading= false;
+             state.errMess=action.payload;
+        }
     },
 })
+// Define a thunk that dispatches those action creators
+// export const fetchDishes = () => async(dispatch) => {
+
+//     dispatch(dishLoading(true));
+
+//     setTimeout(() => {
+//         dispatch(addDishes(DISHES));
+//     }, 2000);
+// }
+
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = dishesSlice.actions
+export const { dishLoading,dishFailed,addDishes } = dishesSlice.actions
 
 export default dishesSlice.reducer

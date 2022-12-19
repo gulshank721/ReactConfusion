@@ -3,7 +3,9 @@ import React from 'react';
 //     Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
 import { Breadcrumb, BreadcrumbItem,
     Button, Row, Col, Label } from 'reactstrap';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors ,actions} from 'react-redux-form';
+import { useSelector, useDispatch } from 'react-redux'
+
 
 import { Link } from 'react-router-dom';
 
@@ -15,6 +17,7 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 
 class ContactUs extends React.Component {
     
+    // resetFeedbackForm = () => { dispatch(actions.reset('feedback'))}
         constructor(props) {
             super(props);
             // this.state = {
@@ -49,6 +52,8 @@ class ContactUs extends React.Component {
         handleSubmit(values) {
             console.log('Current State is: ' + JSON.stringify(values));
             alert('Current State is: ' + JSON.stringify(values));
+            this.props.resetFeedbackForm();
+            console.log(this.props);
             // event.preventDefault();
         }
         // handleBlur = (field) => (evt) => {
@@ -114,6 +119,7 @@ class ContactUs extends React.Component {
                     </div>
                     <div className="col-12 col-sm-6 offset-sm-1">
                         <h5>Map of our Location</h5>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.5108841050396!2d114.20693111467368!3d22.334330585305853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340406cf340689a3%3A0x86b34e5af86dac56!2sNgau%20Chi%20Wan%20Municipal%20Services%20Building%2C%2011%20Clear%20Water%20Bay%20Rd%2C%20Ngau%20Chi%20Wan%2C%20Hong%20Kong!5e0!3m2!1sen!2sin!4v1671365509248!5m2!1sen!2sin" width="400" height="300"   loading="lazy" referrerpolicy="no-referrer-when-downgrade">j</iframe>
                     </div>
                     <div className="col-12 col-sm-11 offset-sm-1">
                         <div className="btn-group" role="group">
@@ -129,8 +135,8 @@ class ContactUs extends React.Component {
                       <h3>Send us your Feedback</h3>
                    </div>
                     <div className="col-12 col-md-9">
-                    <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-                            <Row className="form-group">
+                    <Form model={'feedback'} onSubmit={(values) => this.handleSubmit(values)}>
+                            <Row className="form-group mb-1" >
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
                                     <Control.text model=".firstname" id="firstname" name="firstname"
@@ -152,7 +158,7 @@ class ContactUs extends React.Component {
                                      />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            <Row className="form-group mb-1">
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>
                                     <Control.text model=".lastname" id="lastname" name="lastname"
@@ -174,7 +180,7 @@ class ContactUs extends React.Component {
                                      />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            <Row className="form-group mb-1">
                                 <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>
                                     <Control.text model=".telnum" id="telnum" name="telnum"
@@ -197,7 +203,7 @@ class ContactUs extends React.Component {
                                          />
                                 </Col>
                             </Row>
-                            <Row className="form-group" >
+                            <Row className="form-group mb-1" >
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>
                                     <Control.text model=".email" id="email" name="email"
@@ -217,7 +223,7 @@ class ContactUs extends React.Component {
                                         }}/>
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            <Row className="form-group mb-1">
                                 <Col md={{size: 6, offset: 2}}>
                                     <div className="form-check">
                                         <Label check>
@@ -236,7 +242,7 @@ class ContactUs extends React.Component {
                                     </Control.select>
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            <Row className="form-group mb-1">
                                 <Label htmlFor="message" md={2}>Your Feedback</Label>
                                 <Col md={10}>
                                     <Control.textarea model=".message" id="message" name="message"
@@ -244,14 +250,14 @@ class ContactUs extends React.Component {
                                         className="form-control" />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            <Row className="form-group mb-1 ">
                                 <Col md={{size:10, offset: 2}}>
                                     <Button type="submit" color="primary">
                                     Send Feedback
                                     </Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                         {/* <Form onSubmit={this.handleSubmit}>
                             <FormGroup row>
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
