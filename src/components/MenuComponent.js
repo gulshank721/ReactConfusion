@@ -5,13 +5,17 @@ import { Card, CardImg, CardImgOverlay,
   CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { useSelector } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
 
   function RenderMenuItem ({dish, onClick}) {
+    console.log('RenderMenuItem=',dish,dish._id,parseInt(dish._id))
       return (
+        
           <Card>
-              <Link to={`/menu/${dish.id}`} >
-                  <CardImg width="100%" src={dish.image} alt={dish.name} />
+              <Link to={`/menu/${dish._id}`} >
+                  <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
                   <CardImgOverlay>
                       <CardTitle>{dish.name}</CardTitle>
                   </CardImgOverlay>
@@ -23,9 +27,10 @@ import { Loading } from './LoadingComponent';
 
 
    
-    const Menu=(props)=>{
-      const menu = props.dishes.map((dish) => {
-        if (props.dishes.isLoading) {
+    const Menu=()=>{
+        const dishes = useSelector((state)=>state.dishes.dishes)
+      const menu = dishes.map((dish) => {
+        if (dishes.isLoading) {
           return(
               <div className="container">
                   <div className="row">            
@@ -34,12 +39,12 @@ import { Loading } from './LoadingComponent';
               </div>
           );
       }
-      else if (props.dishes.errMess) {
+      else if (dishes.errMess) {
           return(
               <div className="container">
                   <div className="row"> 
                       <div className="col-12">
-                          <h4>{props.dishes.errMess}</h4>
+                          <h4>{dishes.errMess}</h4>
                       </div>
                   </div>
               </div>

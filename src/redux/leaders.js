@@ -1,23 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { LEADERS } from '../shared/leaders';
+import { createSlice ,createAsyncThunk} from '@reduxjs/toolkit'
+import { baseUrl } from '../shared/baseUrl';
 
 const initialState={
- leaders:LEADERS,
+ leaders:[],
+ isLoading:true,
+ errMess:'',
 }
+
+// First, create the thunk
+ export const fetchLeaders = createAsyncThunk(
+    'leaders/fetchLeaders', async ()=>{
+     return await fetch(baseUrl+'leaders')
+     .then((res)=>res.json());
+    }
+  )
+  
 export const leadersSlice= createSlice({
     name: 'leaders',
     initialState,
-    reducers:{
-        increment: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
-          },
-    },
+    extraReducers:(builder)=>{
+        builder.addCase(fetchLeaders.pending,(state)=>{
+           state.isLoading= true; 
+        })
+        builder.addCase(fetchLeaders.fulfilled,(state,action)=>{
+           state.isLoading= false;
+        //    console.log("fulfilled ",state.leaders);
+           state.leaders=action.payload;
+           state.errMess=''; 
+        })
+        builder.addCase(fetchLeaders.rejected,(state,action)=>{
+           state.isLoading= false;
+           state.leaders =[];
+           state.errMess=action.error.message; 
+        })
+
+
+   },
 })
+
+
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = leadersSlice.actions
+// export const { addLeaders } = leadersSlice.actions
 
 export default leadersSlice.reducer

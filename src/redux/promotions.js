@@ -1,24 +1,47 @@
-
-import { createSlice } from '@reduxjs/toolkit'
-import { PROMOTIONS } from '../shared/promotions';
+import { createSlice ,createAsyncThunk} from '@reduxjs/toolkit'
+import { baseUrl } from '../shared/baseUrl';
 
 const initialState={
- promotions:PROMOTIONS,
+ promotions:[],
+ isLoading:false,
+ errMess:''
 }
-export const promotionsSlice= createSlice({
+
+// First, create the thunk
+export const fetchPromotions = createAsyncThunk(
+    'promotions/fetchPromotions', async ()=>{
+     return await fetch(baseUrl+'promotions')
+     .then((res)=>res.json());
+     
+     
+    }
+    
+  )
+  
+const promotionsSlice= createSlice({
     name: 'promotions',
     initialState,
-    reducers:{
-        increment: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
-          },
-    },
+    extraReducers:(builder)=>{
+        builder.addCase(fetchPromotions.pending,(state)=>{
+           state.isLoading= true; 
+        })
+        builder.addCase(fetchPromotions.fulfilled,(state,action)=>{
+           state.isLoading= false;
+        //    console.log("fulfilled ",state.promotions);
+           state.promotions=action.payload;
+           state.errMess=''; 
+        })
+        builder.addCase(fetchPromotions.rejected,(state,action)=>{
+           state.isLoading= false;
+           state.promotions =[];
+           state.errMess=action.error.message; 
+        })
+
+
+   },
 })
+
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = promotionsSlice.actions
+// export const { addPromotions} = promotionsSlice.actions
 
 export default promotionsSlice.reducer

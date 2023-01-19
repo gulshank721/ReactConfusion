@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { Card, CardImg, CardText, CardBody,
+import { Card, CardImg, CardImgOverlay ,CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Button,Modal,ModalBody,ModalHeader, Label, Row, Col} from 'reactstrap'
 import { Control, LocalForm, Errors } from 'react-redux-form';
-import  {addComments}  from '../redux/comments';
+import  {postComments}  from '../redux/comments';
+import { postFavorites } from "../redux/favorites";
 import {fetchDishes} from '../redux/dishes';
 import { Loading } from './LoadingComponent';
 import { useEffect } from "react";
 import { useSelector, useDispatch, connect } from 'react-redux'
+import { baseUrl } from "../shared/baseUrl";
 // import { connect } from 'react-redux';
 
 
@@ -52,7 +54,7 @@ class CommentForm extends Component {
         console.log("Current State is: " + JSON.stringify(values));
         // alert("Current State is: " + JSON.stringify(values));
         // const {addComment} = this.props.addComments;
-        this.props.addComment(this.props.dishId,values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId,values.rating, values.author, values.comment);
 
     }
 
@@ -182,14 +184,23 @@ class CommentForm extends Component {
 
 // commmentFormComponents Ends here
 
-    function RenderDish({dish}) {
+    function RenderDish({dish, favorite, postFavorite}) {
        
-        
+        const dispatch = useDispatch();
         if (dish != null) {
             return (
                 <div className='col-12 col-md-5 m-1'>
                     <Card>
-                        <CardImg width="100%" src={dish.image} alt={dish.name} />
+                        <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
+                        <CardImgOverlay>
+                                <Button outline color="primary" onClick={() => favorite ? console.log('Already favorite') : dispatch(postFavorite(dish._id))}>
+                                    {favorite ?
+                                        <span className="fa fa-heart"></span>
+                                        : 
+                                        <span className="fa fa-heart-o"></span>
+                                    }
+                                </Button>
+                            </CardImgOverlay>
                         <CardBody>
                             <CardTitle> {dish.name}</CardTitle>
                             <CardText> {dish.description} </CardText>
@@ -206,16 +217,19 @@ class CommentForm extends Component {
     }
 
     function RenderComments({comments ,dishId}){
-        const comment = useSelector((state) => state.comments.comments)
-        const dispatch = useDispatch()
-        const addComment=(dishId,rating,author,comment)=>{
-           const toComment={
-                dishId:dishId,
-                rating:rating,
-                author:author,
-                comment:comment
+        // const comments = useSelector((state) => state.comments.comments)
+        const dispatch = useDispatch();
+        const postComment=(dishId,rating,author,comment)=>{
+            console.log('postcomment data',dishId,rating,author,comment);
+            const newComment={
+               
+                dishId: dishId,
+                rating: parseInt(rating),
+                author: author,
+                comment: comment,
+                date :new Date().toISOString()
             }
-            dispatch(addComments(toComment))
+            dispatch(postComments(newComment))
             };
         if (comments == null) {
             return (<div></div>)
@@ -243,14 +257,15 @@ class CommentForm extends Component {
                     {cmnts}
                 </ul>
                  
-                 <CommentForm dishId={dishId} addComment={addComment}> </CommentForm>
+                 <CommentForm dishId={dishId} postComment={postComment}> </CommentForm>
             </div>
         )
     }
 
 
-    function DishDetail(props){
-        if (props.isLoading) {
+    function DishDetail({dish,isLoading,errMess, comments,favorite,postFavorite}){
+        console.log('In DishDatail', favorite);
+        if (isLoading) {
             return(
                 <div className="container">
                     <div className="row">            
@@ -259,18 +274,18 @@ class CommentForm extends Component {
                 </div>
             );
         }
-        else if (props.errMess) {
+        else if (errMess) {
             return(
                 <div className="container">
                     <div className="row">            
-                        <h4>{props.errMess}</h4>
+                        <h4>{errMess}</h4>
                     </div>
                 </div>
             );
         }
 
        
-       else if (props.dish == null) {
+       else if (dish == null) {
             return (<div></div>);
         }
            
@@ -284,16 +299,16 @@ class CommentForm extends Component {
                     <Breadcrumb>
 
                         <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.dish.name}</h3>
+                        <h3>{dish.name}</h3>
                         <hr />
                     </div>                
             </div>
                 <div className='row'>
-                <RenderDish dish ={props.dish}/>
-                <RenderComments comments={props.comments} dishId={props.dish.id}/>
+                <RenderDish dish ={dish} favorite={favorite} postFavorite={postFavorite}/>
+                <RenderComments comments={comments} dishId={dish.id}/>
                 
                  </div>
             </div>
@@ -303,7 +318,7 @@ class CommentForm extends Component {
     }
 
 
-export {DishDetail};
+export default DishDetail;
 // export default {DishDetail,Connected};
 // export default DishDetail
 // export default connect(null ,{ addComments })(CommentForm);

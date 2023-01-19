@@ -1,6 +1,8 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
 
 function RenderLeader({leader}){
@@ -8,7 +10,7 @@ function RenderLeader({leader}){
        <div key={leader.id} className="col-12 mt-5">
         <Media tag="li" className='row'>
                 <Media left middle className='col-md-2'>
-                    <Media object src={leader.image} alt={leader.name} />
+                    <Media object src={baseUrl+leader.image} alt={leader.name} />
                 </Media>
                 <Media body className="ml-0 col-md">
                     <Media heading>{leader.name}</Media>
@@ -27,8 +29,10 @@ function RenderLeader({leader}){
   );
 }
 
-function AboutUs(props) {
-  const leaders = props.leaders.map((leader) => {
+function AboutUs() {
+const Leaders = useSelector((state)=>state.leaders.leaders)
+
+  const leaders = Leaders.map((leader) => {
     return (
         <RenderLeader leader ={leader}/>
       );

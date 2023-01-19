@@ -119,7 +119,7 @@ class ContactUs extends React.Component {
                     </div>
                     <div className="col-12 col-sm-6 offset-sm-1">
                         <h5>Map of our Location</h5>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.5108841050396!2d114.20693111467368!3d22.334330585305853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340406cf340689a3%3A0x86b34e5af86dac56!2sNgau%20Chi%20Wan%20Municipal%20Services%20Building%2C%2011%20Clear%20Water%20Bay%20Rd%2C%20Ngau%20Chi%20Wan%2C%20Hong%20Kong!5e0!3m2!1sen!2sin!4v1671365509248!5m2!1sen!2sin" width="400" height="300"   loading="lazy" referrerpolicy="no-referrer-when-downgrade">j</iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.5108841050396!2d114.20693111467368!3d22.334330585305853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340406cf340689a3%3A0x86b34e5af86dac56!2sNgau%20Chi%20Wan%20Municipal%20Services%20Building%2C%2011%20Clear%20Water%20Bay%20Rd%2C%20Ngau%20Chi%20Wan%2C%20Hong%20Kong!5e0!3m2!1sen!2sin!4v1671365509248!5m2!1sen!2sin" width="400" height="300"   loading="lazy" referrerPolicy="no-referrer-when-downgrade">j</iframe>
                     </div>
                     <div className="col-12 col-sm-11 offset-sm-1">
                         <div className="btn-group" role="group">
